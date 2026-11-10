@@ -1,0 +1,9 @@
+<html xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head><meta charset="utf-8"></head>
+<body>
+  <table>
+    <tr><th>product</th><th>price</th></tr>
+    <tr><td>widget</td><td>9.99</td></tr>
+  </table>
+</body>
+</html>

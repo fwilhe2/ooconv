@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+[package]
+name = "ooconv-cli"
+version = "0.1.0"
+description = "The ooconv command: xlsx <-> ods, docx <-> odt"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "ooconv"
+path = "src/main.rs"
+# The library is `ooconv` too; documenting both would collide (cargo#6313).
+doc = false
+
+[dependencies]
+ooconv = { path = "../ooconv" }

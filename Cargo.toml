@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+[workspace]
+members = ["ooconv", "cli"]
+resolver = "3"
+
+[workspace.package]
+edition = "2024"
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/fwilhe2/ooxml-ods-converter"
+
+[workspace.dependencies]
+quick-xml = "0.42"
+zip = { version = "9", default-features = false, features = ["deflate", "unreserved"] }
+
+# The XML parser, the zip reader and the inflater, optimised even in a debug build: every test
+# spends its time in them.
+[profile.dev.package.quick-xml]
+opt-level = 3
+[profile.dev.package.zip]
+opt-level = 3

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# `soffice`, run out of the pinned container image (ci/libreoffice-image) instead of whatever a
+# machine has installed: put this directory first on `PATH` and loop L talks to the pin without
+# knowing it (doc/oracles.md). Taken from grind's scripts/soffice-docker.
+#
+# The container sees the host's temp directory at the same path, because that is where the tests
+# stage every input and collect every output (`common::scratch`). Nothing else is mounted.
+# `label=disable` lets the container write there on an SELinux-enforcing host without relabelling
+# the host's temp directory.
+set -euo pipefail
+
+image=$(cat "$(dirname "$(readlink -f "$0")")/../../ci/libreoffice-image")
+tmp=$(cd "${TMPDIR:-/tmp}" && pwd -P)
+
+# `label=disable`: on an SELinux-enforcing host (Fedora, RHEL) the bind mount below is labelled
+# for the host and a container process may read it but not write to it, so `soffice` cannot
+# create its own `UserInstallation` profile and dies with "User installation could not be
+# completed" — every loop C and loop E test then fails for a reason that has nothing to do with
+# the code. The alternative, `-v "$tmp:$tmp:z"`, relabels the host's whole temp directory as a
+# side effect of running a test, which is not a trade a test harness gets to make. A no-op where
+# SELinux is not enforcing, which includes CI.
+exec docker run --rm \
+    --security-opt label=disable \
+    --user "$(id -u):$(id -g)" \
+    -v "$tmp:$tmp" \
+    -e "HOME=$tmp" \
+    -e "TMPDIR=$tmp" \
+    -w "$tmp" \
+    "$image" \
+    soffice "$@"

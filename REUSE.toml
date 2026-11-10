@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Which licence is which: code AGPL-3.0-or-later; prose (doc/, README, CLAUDE.md) CC-BY-4.0;
+# test data CC0-1.0, declared here so the documents under test stay unchanged. Vendored files
+# keep their upstream's licence.
+
+version = 1
+SPDX-PackageName = "ooconv"
+SPDX-PackageSupplier = "Florian Wilhelm <fwilhelm.wgt+github@gmail.com>"
+SPDX-PackageDownloadLocation = "https://github.com/fwilhe2/ooxml-ods-converter"
+
+# Generated test documents: ooxmlgen's corpus (vendored through grind), odsgen's and odtgen's
+# samples, grind's own fixtures, and this repo's measurements. Same author; CC0-1.0.
+[[annotations]]
+path = [
+    "ooconv/tests/data/corpus/xlsx/**",
+    "ooconv/tests/data/corpus/ods/*.ods",
+    "ooconv/tests/data/corpus/odt/**",
+    "ooconv/tests/data/corpus/docx/**",
+    "ooconv/tests/data/measured/**",
+]
+SPDX-FileCopyrightText = "2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+# grind's R7 documents, MIT as upstream states (grind REUSE.toml).
+[[annotations]]
+path = "ooconv/tests/data/corpus/ods/kb/**"
+SPDX-FileCopyrightText = "2022 Florian Wilhelm"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["Cargo.lock"]
+SPDX-FileCopyrightText = "2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>"
+SPDX-License-Identifier = "CC0-1.0"

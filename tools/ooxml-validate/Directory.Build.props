@@ -1,0 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<!-- Build intermediates go to .tools/ with the output, keeping the source tree clean. -->
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../.tools/ooxml-validate-obj/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

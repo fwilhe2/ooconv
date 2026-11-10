@@ -1,0 +1,10 @@
+SPDX-FileCopyrightText: 2025 OASIS Open
+SPDX-License-Identifier: LicenseRef-OASIS-IPR
+
+OASIS Standard, 6 October 2025. Open Document Format for Office Applications
+(OpenDocument) Version 1.4, Relax-NG Schema (Part 3).
+Source: https://docs.oasis-open.org/office/OpenDocument/v1.4/os/schemas/
+
+Redistributed verbatim. The OASIS terms forbid modifying the document itself,
+including by adding to or removing its notices - which is why this sidecar file
+exists instead of an SPDX header inside the .rng.

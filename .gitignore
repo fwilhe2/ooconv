@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Florian Wilhelm <fwilhelm.wgt+github@gmail.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+/target
+# scripts/fetch-tools.sh downloads and builds the oracles' tools here.
+/.tools/
+/tools/ooxml-validate/bin/
+/tools/ooxml-validate/obj/
