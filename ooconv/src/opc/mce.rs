@@ -30,6 +30,7 @@ pub enum Alternative {
     Other,
 }
 
+#[must_use]
 pub fn classify(local: &str) -> Alternative {
     match local {
         "AlternateContent" => Alternative::Wrapper,
@@ -42,6 +43,7 @@ pub fn classify(local: &str) -> Alternative {
 /// Do we satisfy a `Requires="…"`? Only the empty requirement: no extension namespace is
 /// understood, so the `mc:Fallback` is what gets read — correctly, since a `Choice` requiring
 /// `x14` holds `x14` content. A function so that understanding one has one place to go.
+#[must_use]
 pub fn satisfies(requires: &str) -> bool {
     requires.split_whitespace().next().is_none()
 }

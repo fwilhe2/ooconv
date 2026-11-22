@@ -58,6 +58,65 @@ fn the_document_fixture_survives_every_format() {
     }
 }
 
+/// Every XML part of an OPC package re-encoded as UTF-16, which Part 2 allows (grind
+/// `doc/xlsx-format.md` §1.5): `big` picks the byte order, `mark` whether a BOM says so.
+fn as_utf16(package: &[u8], big: bool, mark: bool) -> Vec<u8> {
+    use std::io::{Cursor, Read, Write};
+    let mut archive = zip::ZipArchive::new(Cursor::new(package)).unwrap();
+    let mut out = zip::ZipWriter::new(Cursor::new(Vec::new()));
+    for i in 0..archive.len() {
+        let mut entry = archive.by_index(i).unwrap();
+        let name = entry.name().unwrap().into_owned();
+        let mut bytes = Vec::new();
+        entry.read_to_end(&mut bytes).unwrap();
+        if name.ends_with(".xml") || name.ends_with(".rels") {
+            let text = String::from_utf8(bytes)
+                .unwrap()
+                .replace("encoding=\"UTF-8\"", "encoding=\"UTF-16\"");
+            bytes = match (big, mark) {
+                (true, true) => vec![0xFE, 0xFF],
+                (false, true) => vec![0xFF, 0xFE],
+                _ => Vec::new(),
+            };
+            for unit in text.encode_utf16() {
+                bytes.extend(if big {
+                    unit.to_be_bytes()
+                } else {
+                    unit.to_le_bytes()
+                });
+            }
+        }
+        out.start_file(name, zip::write::SimpleFileOptions::default())
+            .unwrap();
+        out.write_all(&bytes).unwrap();
+    }
+    out.finish().unwrap().into_inner()
+}
+
+#[test]
+fn the_fixtures_read_the_same_from_utf16_parts() {
+    let book = common::fixtures::workbook();
+    let doc = common::fixtures::document();
+    let xlsx = ooconv::sheet::write(&book, Format::Xlsx, &mut Report::default()).unwrap();
+    let docx = ooconv::text::write(&doc, Format::Docx, &mut Report::default()).unwrap();
+    for (big, mark) in [(true, true), (true, false), (false, true), (false, false)] {
+        let mut report = Report::default();
+        let back = ooconv::sheet::read(&as_utf16(&xlsx, big, mark), Format::Xlsx, &mut report)
+            .unwrap_or_else(|e| panic!("xlsx, big {big}, mark {mark}: {e}"));
+        assert_eq!(report.losses, vec![], "xlsx, big {big}, mark {mark}");
+        if let Some(d) = common::diff_books(&book, &back) {
+            panic!("xlsx, big {big}, mark {mark}: {d}");
+        }
+        let mut report = Report::default();
+        let back = ooconv::text::read(&as_utf16(&docx, big, mark), Format::Docx, &mut report)
+            .unwrap_or_else(|e| panic!("docx, big {big}, mark {mark}: {e}"));
+        assert_eq!(report.losses, vec![], "docx, big {big}, mark {mark}");
+        if let Some(d) = common::diff_docs(&doc, &back) {
+            panic!("docx, big {big}, mark {mark}: {d}");
+        }
+    }
+}
+
 #[test]
 fn every_corpus_document_survives_every_format_of_its_kind() {
     let mut exact = 0;

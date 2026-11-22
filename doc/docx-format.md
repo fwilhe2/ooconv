@@ -9,7 +9,8 @@ SPDX-License-Identifier: CC-BY-4.0
 The facts the docx reader and writer stand on, under `doc/xlsx-format.md`'s markers:
 **`MEASURED`**, **`SPEC`**, and **`UNVERIFIED`** (which may not be implemented). Reading facts
 are grind's: grind `doc/docx-format.md` (namespaces and Strict §1.1–1.2, the parts by frequency
-§1.3, `w:`-namespaced attributes §1.4).
+§1.3, `w:`-namespaced attributes §1.4; UTF-16 parts are grind `doc/xlsx-format.md` §1.5, shared
+through `opc::package`).
 
 ---
 

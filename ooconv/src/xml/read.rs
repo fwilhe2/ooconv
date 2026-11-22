@@ -41,6 +41,7 @@ pub struct Name {
 impl Name {
     /// Is this `<local>` in namespace `ns`, in either flavour? Each filter wraps it for its main
     /// namespace — `is("c")`, `w("p")`.
+    #[must_use]
     pub fn in_ns(&self, ns: Ns, local: &str) -> bool {
         self.ns == ns && self.local == local
     }
@@ -58,11 +59,13 @@ pub struct Attrs {
 impl Attrs {
     /// An attribute in **no namespace**, as almost every SpreadsheetML attribute is: `<sheet
     /// name="Budget" sheetId="1">`.
+    #[must_use]
     pub fn plain(&self, local: &str) -> Option<&str> {
         self.get(Ns::None, local)
     }
 
     /// An attribute in a namespace — `r:id`, `mc:Ignorable`.
+    #[must_use]
     pub fn get(&self, ns: Ns, local: &str) -> Option<&str> {
         self.items
             .iter()
@@ -72,6 +75,7 @@ impl Attrs {
 
     /// `"1"`, `"true"` and `"on"` are all true; everything else, including absence, is false.
     /// ECMA-376 §18.18.2 (`ST_Boolean`), which is XSD's boolean plus Excel's spelling of it.
+    #[must_use]
     pub fn flag(&self, local: &str) -> bool {
         matches!(self.plain(local), Some("1" | "true" | "on"))
     }
@@ -120,6 +124,7 @@ pub struct Reader<'a> {
 }
 
 impl<'a> Reader<'a> {
+    #[must_use]
     pub fn new(bytes: &'a [u8]) -> Self {
         let mut inner = NsReader::from_reader(bytes);
         // Off, so `xml:space="preserve"` is honoured by default: 51 of LibreOffice's 360 test
@@ -412,6 +417,7 @@ fn collect_attrs(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::assert_matches;
 
     /// Collect `(namespace, local)` for every child the visitor recognises, where
     /// "recognises" means SpreadsheetML — everything else is skipped, which is the point.
@@ -470,7 +476,7 @@ mod tests {
             r.children(|_, _, _| Ok(Handled::No))?;
             Ok(Handled::Yes)
         });
-        assert!(matches!(err, Err(Error::Xml(_))), "got {err:?}");
+        assert_matches!(err, Err(Error::Xml(_)), "got {err:?}");
     }
 
     /// A self-closed element has no end tag, so asking for its children or its text must not

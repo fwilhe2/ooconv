@@ -12,7 +12,7 @@
 //! | `A1`, `$A$1`, `Sheet1!A1`, `'My Sheet'!A1` | `[.A1]`, `[.$A$1]`, `[Sheet1.A1]`, `['My Sheet'.A1]` |
 //! | `Sheet1:Sheet3!A1` | `[Sheet1.A1:Sheet3.A1]` (Part 4 §4.8's cuboid) |
 //! | `A:A`, `1:1` | `[.A:.A]`, `[.1:.1]` |
-//! | `,` between arguments, `{1,2;3,4}` | `;` (§5.6), `{1;2|3;4}` (§5.13) |
+//! | `,` between arguments, `{1,2;3,4}` | `;` (§5.6), `{1;2\|3;4}` (§5.13) |
 //! | `TRUE`, `FALSE` | `TRUE()`, `FALSE()` (§6.15) |
 //! | `A1:A2 B1:B2` (intersection), `(A1,B1)` (union) | `[.A1:.A2]![.B1:.B2]`, `[.A1]~[.B1]` |
 //! | `_xlfn.XLOOKUP`, `CEILING` | `COM.MICROSOFT.XLOOKUP`, `COM.MICROSOFT.CEILING` (`names.rs`) |

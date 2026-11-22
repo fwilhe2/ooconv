@@ -17,8 +17,8 @@ Every fact carries one marker, and a fact moves up the ladder, never down quietl
 
 **Reading** is grind's filter's ground and its facts are cited, not repeated: grind
 `doc/xlsx-format.md` (flavours and namespaces §1, markup compatibility §1.3, `xml:space` §1.4,
-the 1900 date system §2.1, `_xHHHH_` escapes §2.6, function names on import §5.1). The reader
-code lifted from grind keeps its citations.
+UTF-16 parts §1.5, the 1900 date system §2.1, `_xHHHH_` escapes §2.6, function names on import
+§5.1). The reader code lifted from grind keeps its citations.
 
 ---
 

@@ -94,6 +94,15 @@ indexes (kept as their text), page breaks. Each is a `Loss` class; `ooconv --str
 
 grind's `grind-ooxml` became `opc` and `xml::read` here, and grind's measured facts about
 reading `.xlsx` and `.docx` are cited from its `doc/xlsx-format.md` and `doc/docx-format.md`
-rather than copied. grind could depend on this crate to *write* Microsoft formats — an adapter
+rather than copied.
+
+The lifted files are copies, not a dependency, and are in step with grind **v0.1.1**. Depending
+on `grind-ooxml` instead would mean a git dependency (grind publishes no crates) that brings
+`grind-core` with it, on code this crate has since generalised to ODF namespaces — and once
+grind depends on this crate, the two would depend on each other. To catch up with a later grind
+release, read `git diff v0.1.1 <release> -- ooxml/` in grind and port what changes reading;
+`has_core_properties` (0.1.1) is not ported, since nothing here reads `docProps/core.xml` yet.
+
+grind could depend on this crate to *write* Microsoft formats — an adapter
 from its model to `Workbook`/`Document` — without its own model learning anything about them.
 Both are AGPL-3.0-or-later.
